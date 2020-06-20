@@ -1,19 +1,48 @@
 
 <div id='managedlayout'>
-        <div id="outer-east" class="ui-layout-east">East</div>
+        <div id="outer-east" class="ui-layout-east" style="background: black">East</div>
 
-    <div id="outer-north" class="ui-layout-north">
+    <div id="outer-north" class="ui-layout-north" style="background: #35648b;border-bottom:1px solid #ccc">
+        
+
         <div class="erp_header ">NORTH
-
             <div class="ui-layout-north"></div>
-            <div class="ui-layout-center"></div>
+            <div class="ui-layout-center">
+                <button id="autohide_btn" (click)="menucliked()">M</button>
+
+            </div>
         </div>
+        
+
     </div>
-    <div id="outer-center" class="ui-layout-center">Center</div>
+    <div id="outer-center" class="ui-layout-center" >
+        <div id="innerLayoutOptions">
+            <div id="inner-north" class="ui-layout-north">
+                <div class="inner_header ">NORTH
+                    <div class="ui-layout-north"></div>
+                    <div class="ui-layout-center">
+        
+                    </div>
+                </div>
+            </div>
 
-    <div id="outer-west" class="ui-layout-west">West</div>
+                <div class="ui-layout-center" id="inner_center">Center</div>
+                        <div class="ui-layout-south" id="inner_south">
+                        South   
+                        </div>
+                            <div class="ui-layout-east">East</div>
+                                <div class="ui-layout-west">West</div>
+        </div>
+        
+    </div>
 
-    <div id="outer-south" class="ui-layout-south">South</div>
+    <div id="outer-west" class="ui-layout-west" style="border-right:1px solid #ccc" >
+        <!-- <div style="width: 100%;height:100%;"> -->
+            <app-leftpanel></app-leftpanel>
+        <!-- </div>  -->
+    </div>
+
+    <div id="outer-south" class="ui-layout-south" style="background: lightblue;">South</div>
 
 </div>
 

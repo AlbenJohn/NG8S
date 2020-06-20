@@ -1,5 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import * as $ from 'jquery'
+import { Component, OnInit,HostListener } from '@angular/core';
+import * as $ from 'jquery';
+import { PlatformLocation } from '@angular/common';
+
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -7,91 +9,110 @@ import * as $ from 'jquery'
 })
 export class HomeComponent implements OnInit {
   public manageLayoutOptions = {
-    name: 'outerLayout'
-    , resizeWithWindow: true
-    , resizeWhileDragging: false
-    , resizerDragOpacity: 0.5    
-    , contentSelector: ".ui-widget-content"
-    , center__minWidth: 600
-    , fxName: "slide"
-    , fxSpeed: 600
-    , inset: { top: 0, left: 0, right: 0 }
-    , resizerDblClickToggle: false
-    , livePaneResizing: false
-    , liveContentResizing: false
-    , liveResizingTolerance: 0
-    , spacing_open: 10
-    , spacing_closed: 10
-    , togglerLength_open: 30
-    , togglerLength_closed: 30
-    , closable: true
-    , resizable: true
-    , slidable: true
-    , triggerEventsOnLoad: true
-    , slideTrigger_open: "mouseenter"
-    , enableCursorHotkey: false
-    , stateManagement__enabled: true
-    , stateManagement__stateKeys: "west.size,east.size,west.isClosed,east.isHidden"
-    , stateManagement__autoLoad: false // disable automatic cookie-load
-    , stateManagement__autoSave: false // disable automatic cookie-save
+      name:'innerlayout',
+    center: {
+        paneSelector: "#inner_center"
+,
+        resizable:true
+        , livePaneResizing: true
+        , resizeWithWindow: true
+        
+    },
    
- ,north: {
-      paneSelector: "#outer-north"
-   ,  fxName:                "none"
-   ,  spacing_closed:        38
-   , resizable: false
-   , closable: false
-   ,  initClosed:false
-   
-   }
+ north: {
+        paneSelector: "#inner-north"
+        , size: "4%"
+        , minSize: 40
+        , togglerContent_closed: '<i class="tglr-arw to_dwn"></i>'
+        , togglerAlign_open: "right"
+        , togglerAlign_closed: "right"
+        , resizable: false
+        , closable: false
+        , spacing_open: 3
+        , spacing_closed: 10
+        , childOptions: {
+            name: "Header"            
+            , center: {
+                paneSelector: ".inner_header"
+                , childOptions:
+                {
+                    name: "headerblock"
+                    , spacing_open: 1
+                    , spacing_closed: 1
+
+                    , togglerLength_open: 20
+                    , togglerLength_closed: 20
+                    , north: {
+                        size: '100%'
+                        , initClosed: true
+                        , initHidden: true
+                        , spacing_open: 1
+                        , spacing_closed: 1
+                        , togglerAlign_open: "right"
+                        , togglerAlign_closed: "right"
+                    }
+                    , south: {
+                        size: 24
+                        , initClosed: false
+                        , togglerAlign_open: "left"
+                        , togglerAlign_closed: "left"
+                        , spacing_closed: 0
+                        , spacing_open: 0
+                        , initHidden: true
+                        //, initClosed: true  
+
+                    }
+                    , center: {
+                        size: '100%'
+                    }
+
+                    , east: {
+                        size: 30
+                        , min_Size: 30
+                        , max_Height: 58
+                        , initClosed: true
+                        , spacing_open: 10
+                        , spacing_closed: 10
+                        , slidable: true
+                        , slideDelay_open: 2
+                        , togglerAlign_open: "top"
+                        , togglerAlign_closed: "top"
+                        , initHidden: true
+                    }
+                }
+            }
+        }
+    }
 ,  south: {
-      fxName:                "none"
-   ,  spacing_closed:        8
-   ,  togglerLength_closed:  "100%"
-   ,resizable: false
-    , closable: false
+    paneSelector:"#inner_south"
+    ,size: 100,
+    maxHeight: 100
+    , spacing_open: 0
+    , spacing_closed: 0
+    , initClosed: false
+    , slidable: false
+    , resizable: false
+    , togglerContent_open: '<i class="tglr-arw  to_dwn"></i>'
+    , togglerContent_closed: '<i class="tglr-arw to_up"></i>'
    }
    ,west:{
-    paneSelector: "#outer-west"
-    ,resizable: false
-    , closable: false
+  
+     initClosed: true
+    , initHidden: true
     
    }
    ,east:{
       initClosed:true
+      , initHidden: true
    }
   }
 
   public OuterLayoutOptions = {
-    name: 'outerLayout'
-    , resizeWithWindow: true
-    , resizeWhileDragging: false
-    , resizerDragOpacity: 0.5    
-    , contentSelector: ".ui-widget-content"
-    , center__minWidth: 600
-    , fxName: "slide"
-    , fxSpeed: 600
-    , inset: { top: 0, left: 0, right: 0 }
-    , resizerDblClickToggle: false
-    , livePaneResizing: false
-    , liveContentResizing: false
-    , liveResizingTolerance: 0
-    , spacing_open: 10
-    , spacing_closed: 10
-    , togglerLength_open: 30
-    , togglerLength_closed: 30
-    , closable: true
-    , resizable: true
-    , slidable: true
-    , triggerEventsOnLoad: true
-    , slideTrigger_open: "mouseenter"
-    , enableCursorHotkey: false
-    , stateManagement__enabled: true
-    , stateManagement__stateKeys: "west.size,east.size,west.isClosed,east.isHidden"
-    , stateManagement__autoLoad: false // disable automatic cookie-load
-    , stateManagement__autoSave: false // disable automatic cookie-save
-    , center: {
+     center: {
         paneSelector: "#outer-center"
+        ,resizable:true
+        , livePaneResizing: true
+        , resizeWithWindow: true
         ,size:'100%'
     }
     , north: {
@@ -174,27 +195,58 @@ export class HomeComponent implements OnInit {
     }
     , west: {
         paneSelector: "#outer-west"
-        , size: '3.9%'
-        , minSize: 26, closable: true
-        , resizable: false
-        , spacing_open: 0
-        , spacing_closed: 0
+        , size: '200'
+        , initClosed: false
+        , initHidden: false
+        , resizable: true
+       
     }
     , east: {
         paneSelector: "#outer-east"
-        , initClosed: true
+        , size: '200'
+        , initClosed: false
         , initHidden: false
-        , size: '4%'
+    }
+    , onresizeall_end: function () {
+
     }
 };
-  constructor()
+
+
+
+
+innerLayout;
+public lfpaenabled:boolean = true;
+  constructor(public location: PlatformLocation)
    {
     $(document).ready( () =>{
-      $('#managedlayout').layout(this.OuterLayoutOptions);
+  this.innerLayout =    $('#managedlayout').layout(this.OuterLayoutOptions);
+    //   $("#outer-west-resizer").hide();
+      $('#innerLayoutOptions').layout(this.manageLayoutOptions);
       });
+      location.onPopState(() => {
+        console.log('pressed back in add!!!!!');
+        //this.router.navigateByUrl(‘/multicomponent’);
+        history.forward();
+        });
     }
-
+    // @HostListener('window:popstate', ['$event'])
+    // onPopState(event) {
+    //   console.log('Back button pressed');
+    //   event.his
+    // }
   ngOnInit() {
   }
+  menucliked(){
 
+    this.lfpaenabled = !this.lfpaenabled;
+        if(!this.lfpaenabled){           
+            this.innerLayout.close('west')
+        }
+        else{
+            this.innerLayout.open('west')
+        }
+    
+
+  }
 }
